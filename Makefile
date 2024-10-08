@@ -1,44 +1,45 @@
+# Set the compiler and compiler flags
 CC = g++
 OPT = -O3
 WARN = -Wall
-CFLAGS = $(OPT) $(WARN) $(INC) $(LIB)
+CFLAGS = $(OPT) $(WARN) -I$(INCLUDE_DIR) -g
 
-# List all your .cc files here (source files, excluding header files)
-SIM_SRC = branch_predictor.cpp
+# Directories
+SRC_DIR = src
+INCLUDE_DIR = include
+BUILD_DIR = build
 
-# List corresponding compiled object files here (.o files)
-SIM_OBJ = branch_predictor.o
- 
-#################################
+# List all .cpp files in src directory
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
 
-# default rule
+# Generate corresponding .o files in the build directory
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRC_FILES))
 
-all: bpsim
-	@echo "Done with make..."
+# Output executable name
+TARGET = bpsim
 
+# Default rule
+all: $(TARGET)
+	@echo "Build complete!"
 
-# rule for making bpsim
+run: $(TARGET)
+	@echo "Build complete!"
+	# reset
+	./TEST.sh > ./run.log
 
-bpsim: $(SIM_OBJ)
-	$(CC) -o bpsim $(CFLAGS) $(SIM_OBJ) -lm
-	@echo "-----------DONE WITH BPSIM-----------"
+# Rule for building the executable
+$(TARGET): $(OBJ_FILES)
+	$(CC) -o $(TARGET) $(OBJ_FILES) $(CFLAGS)
 
+# Rule for compiling .cpp to .o, ensuring the build directory exists
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# generic rule for converting any .cc file to any .o file
- 
-.cc.o:
-	$(CC) $(CFLAGS)  -c $*.cc
-
-
-# type "make clean" to remove all .o files plus the bpsim binary
-
+# Clean rule to remove all compiled files
 clean:
-	rm -f *.o bpsim
+	rm -rf $(BUILD_DIR) $(TARGET)
 
-
-# type "make clobber" to remove all .o files (leaves bpsim binary)
-
-clobber:
-	rm -f *.o
-
+# Phony targets to avoid conflicts
+.PHONY: all clean
 
