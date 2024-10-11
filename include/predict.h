@@ -8,25 +8,13 @@
 
 using namespace std;
 
-enum BR_RES {
-  NT = 0, // NOT TAKEN
-  T = 1   // TAKEN
-};
+#define NT 0 // NOT TAKEN
+#define T 1  // TAKEN
 
-enum table_counters {
-  SN = 0, // predict NT, strong not taken
-  WN = 1, // predict NT, weak not taken
-  WT = 2, // predict T, weak taken
-  ST = 3  // predict T, strong taken
-};
-
-#define STATIC 0
-#define GSHARE 1
-#define TOURNAMENT 2
-#define CUSTOM 3
-extern const char *bpName[];
-
-extern int verbose;
+#define SN 0
+#define WN 1
+#define WT 2
+#define ST 3
 
 class predictor {
 private:
@@ -36,10 +24,12 @@ private:
   uint Tbits;  // bits for table, its gonna be two
   uint Gsize;  // GH bits to take
   uint PCsize; // PC bits to take
-  vector<table_counters> prediction_table;
+  vector<uint> prediction_table;
   uint masker(uint size);
 
 public:
+  uint branches;
+  uint mispreds;
   predictor(uint n, uint m);
   ~predictor();
   uint8_t make_prediction(uint32_t pc);
