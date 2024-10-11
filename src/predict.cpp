@@ -22,6 +22,8 @@ predictor::predictor(uint m, uint n) : Gsize(m), PCsize(n) {
   }
 }
 
+predictor::~predictor() {}
+
 uint8_t predictor::make_prediction(uint index) {
   uint prediction;
   prediction = prediction_table[index];

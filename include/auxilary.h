@@ -14,6 +14,6 @@ typedef vector<pair<uint, char>> accesspattern;
 
 void parse_file(accesspattern &accesses, string &file);
 
-void simulate(accesspattern &accesses);
+void simulate(accesspattern &accesses, predictor &sim_pred);
 
 #endif

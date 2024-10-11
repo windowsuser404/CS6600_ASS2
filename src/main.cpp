@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     predictor my_pred = predictor(M, 0);
     accesspattern accesses;
     parse_file(accesses, trace_file);
-    simulate(accesses);
+    simulate(accesses, my_pred);
 
   } else if (given_predictor == "gshare") {
     if (argc != 5) {
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     predictor my_pred = predictor(M, N);
     accesspattern accesses;
     parse_file(accesses, trace_file);
-    simulate(accesses);
+    simulate(accesses, my_pred);
 
   } else {
     std::cerr << "Unknown predictor type. Use either 'bimodal' or 'gshare'.\n";
