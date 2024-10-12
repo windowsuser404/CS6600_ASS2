@@ -1,5 +1,7 @@
 #include "../include/predict.h"
+#include <iostream>
 #include <stdio.h>
+
 #define TABLE_COUNTER_BITS 2
 uint predictor::masker(uint size) {
   uint mask = 0;
@@ -45,6 +47,10 @@ void predictor::train_predictor(uint32_t pc, uint8_t outcome) {
 
   prediction = make_prediction(index);
 
+  if (prediction != outcome) {
+    this->mispreds++;
+  }
+
   if (outcome == T) {
     if (prediction_table[index] != ST) {
       prediction_table[index]++;
@@ -56,4 +62,11 @@ void predictor::train_predictor(uint32_t pc, uint8_t outcome) {
   }
   GHreg = GHreg << 1 | outcome;
   return;
+}
+
+void predictor::print() {
+  for (int i = 0; i < prediction_table.size(); i++) {
+    cout << "i" << " ";
+    cout << prediction_table[i] << endl;
+  }
 }

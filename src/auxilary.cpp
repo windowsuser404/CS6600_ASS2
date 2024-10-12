@@ -34,8 +34,9 @@ void parse_file(accesspattern &accesses, string &traceFile) {
 
 void simulate(accesspattern &accesses, predictor &sim_pred) {
   for (int acc_count = 0; acc_count < accesses.size(); acc_count++) {
+    sim_pred.branches++;
     char operation = accesses[acc_count].second;
     uint pc = accesses[acc_count].first;
-    cout << "took " << operation << " in pc " << pc << endl;
+    sim_pred.train_predictor(pc, operation);
   }
 }
