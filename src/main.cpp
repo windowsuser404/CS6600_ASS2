@@ -1,6 +1,7 @@
 #include "../include/auxilary.h"
 #include "../include/predict.h"
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -54,26 +55,23 @@ int main(int argc, char *argv[]) {
     uint N = atoi(argv[3]);
     trace_file = argv[4];
 
-    // Output parsed values
-    cout << "Predictor: " << given_predictor << endl;
-    cout << "M: " << M << endl;
-    cout << "N: " << N << endl;
-    cout << "Trace file: " << trace_file << endl;
-
     predictor my_pred = predictor(M, N);
     accesspattern accesses;
     parse_file(accesses, trace_file);
     simulate(accesses, my_pred);
 
+    float miss_rate =
+        ((float)my_pred.mispreds) / ((float)my_pred.branches) * 100;
+
     cout << "COMMAND" << endl;
-    cout << "./bpsim bimodal ";
+    cout << "./bpsim gshare ";
     cout << M << " " << N << " ";
     cout << trace_file << endl;
     cout << "OUTPUT" << endl;
     cout << "number of predictions: " << my_pred.branches << endl;
     cout << "number of mispredictions: " << my_pred.mispreds << endl;
-    cout << "misprediction rate: "
-         << (my_pred.mispreds) / ((float)(my_pred.branches)) << endl;
+    cout << "misprediction rate: " << fixed << setprecision(2) << miss_rate
+         << "%" << endl;
     cout << "FINAL GSHARE CONTENTS" << endl;
     my_pred.print();
 
