@@ -1,4 +1,5 @@
 *.txt
+Plots/
 *.o
 bpsim
 .gdb_history
